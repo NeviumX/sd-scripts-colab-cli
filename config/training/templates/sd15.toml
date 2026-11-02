@@ -1,0 +1,59 @@
+# SD 1.5 の LoRA 学習。キーは sd-scripts の引数名で、このまま sd-scripts の TOML として読める。
+# ファイル名だけの値は VM の models フォルダーを指す。config/models.txt にあれば自動でダウンロードする。
+# dataset_config と sample_prompts を省略すると、config/datasets/templates と config/prompts/templates の同じ名前のファイルを使う。
+# 別のファイルを使うときは、手元のファイルをこのファイルからの相対パスで書く。
+# これは原本なので書き換えない。変えたいキーだけを config/training/<このファイルの名前>.local.toml に書く。値を "" にするとキーを消せる。
+# 生成確認を止めるときは local に sample_every_n_epochs = 0 と書く。
+# 学習率と 3 回のリスタートは組み合わせで成り立っているので、1 つだけ変えると過学習する恐れがある。
+
+[model]
+pretrained_model_name_or_path = "AnyLoRA_bakedVae_blessed_fp16.safetensors"
+vae = "vae-ft-mse-840000-ema-pruned.safetensors"
+clip_skip = 2
+
+[job]
+output_name = "my-sd15-lora"
+
+[network]
+network_module = "networks.lora"
+network_dim = 32
+network_alpha = 16
+
+[optimizer]
+optimizer_type = "AdamW8bit"
+learning_rate = 5e-4
+unet_lr = 5e-4
+text_encoder_lr = 1e-4
+lr_scheduler = "cosine_with_restarts"
+lr_scheduler_num_cycles = 3
+lr_warmup_steps = 0.05                 # 1 未満なら全ステップに対する割合
+max_grad_norm = 1.0
+min_snr_gamma = 5
+
+[precision_memory]
+mixed_precision = "fp16"
+save_precision = "fp16"
+sdpa = true
+gradient_checkpointing = true
+gradient_accumulation_steps = 1
+cache_latents = true
+cache_latents_to_disk = true
+max_data_loader_n_workers = 2
+persistent_data_loader_workers = true
+
+[caption]
+max_token_length = 225
+
+[run]
+max_train_epochs = 10
+seed = 42
+
+[saving]
+save_model_as = "safetensors"
+save_every_n_epochs = 1
+save_state = true
+save_last_n_epochs_state = 1
+
+[sampling]
+sample_every_n_epochs = 1
+sample_sampler = "euler_a"

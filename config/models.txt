@@ -1,0 +1,35 @@
+# 学習の TOML に書いたファイル名がここにあれば、VM に無いときに自動でダウンロードする。
+# ファイル名は URL の最後の部分。1 行に 1 つ。# はコメント。「URL ファイル名」と書くと、ファイル名を指定できる。
+# ここに無いモデルは学習の開始時に URL を尋ね、答えを git 管理外の config/models.local.txt に残す。
+
+# SD 1.5
+https://huggingface.co/Lykon/AnyLoRA/resolve/main/AnyLoRA_bakedVae_blessed_fp16.safetensors
+https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors
+https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.safetensors
+
+# SDXL
+https://huggingface.co/cagliostrolab/animagine-xl-4.0-zero/resolve/main/animagine-xl-4.0-zero.safetensors
+https://huggingface.co/cagliostrolab/animagine-xl-4.0/resolve/main/animagine-xl-4.0-opt.safetensors
+https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors
+https://huggingface.co/madebyollin/sdxl-vae-fp16-fix/resolve/main/sdxl_vae.safetensors
+
+# Illustrious
+https://huggingface.co/OnomaAIResearch/Illustrious-xl-early-release-v0/resolve/main/Illustrious-XL-v0.1.safetensors
+https://huggingface.co/OnomaAIResearch/Illustrious-XL-v1.0/resolve/main/Illustrious-XL-v1.0.safetensors
+https://huggingface.co/Laxhar/noobai-XL-1.1/resolve/main/NoobAI-XL-v1.1.safetensors
+
+# Anima
+https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/diffusion_models/anima-base-v1.0.safetensors
+https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/vae/qwen_image_vae.safetensors
+https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/text_encoders/qwen_3_06b_base.safetensors
+https://huggingface.co/Gazingstars123/Anima-2.9B/resolve/main/Anima-2.9B-preview-v1.safetensors
+https://huggingface.co/lylogummy/Anima-3.8B/resolve/main/difussion_models/Anima-3.8B-v1.1.safetensors
+https://huggingface.co/lylogummy/Anima-3.8B/resolve/main/text_encoders/qwen35_4b.safetensors
+
+# MOSS-Image
+https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/diffusion_models/moss_image_base_bf16.safetensors
+https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/diffusion_models/moss_image_sft_bf16.safetensors
+https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/diffusion_models/moss_image_base_int8_convrot.safetensors
+https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/vae/flux2-vae.safetensors
+https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/text_encoders/qwen3.5_9b_bf16.safetensors
+https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/text_encoders/qwen3.5_9b_int8_convrot.safetensors

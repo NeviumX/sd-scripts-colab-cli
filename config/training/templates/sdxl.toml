@@ -1,0 +1,58 @@
+# SDXL の LoRA 学習。キーは sd-scripts の引数名で、このまま sd-scripts の TOML として読める。
+# ファイル名だけの値は VM の models フォルダーを指す。config/models.txt にあれば自動でダウンロードする。
+# dataset_config と sample_prompts を省略すると、config/datasets/templates と config/prompts/templates の同じ名前のファイルを使う。
+# 別のファイルを使うときは、手元のファイルをこのファイルからの相対パスで書く。
+# これは原本なので書き換えない。変えたいキーだけを config/training/<このファイルの名前>.local.toml に書く。値を "" にするとキーを消せる。
+# 生成確認を止めるときは local に sample_every_n_epochs = 0 と書く。
+
+[model]
+pretrained_model_name_or_path = "animagine-xl-4.0-zero.safetensors"
+vae = "sdxl_vae.safetensors"
+no_half_vae = true
+
+[job]
+output_name = "my-sdxl-lora"
+
+[network]
+network_module = "networks.lora"
+network_dim = 32
+network_alpha = 16
+network_train_unet_only = true
+
+[optimizer]
+optimizer_type = "AdamW8bit"
+learning_rate = 3e-4
+lr_scheduler = "cosine"
+lr_warmup_steps = 0.05                 # 1 未満なら全ステップに対する割合
+max_grad_norm = 1.0
+min_snr_gamma = 5
+
+[precision_memory]
+mixed_precision = "fp16"
+save_precision = "fp16"
+sdpa = true
+gradient_checkpointing = true
+gradient_accumulation_steps = 1
+cache_latents = true
+cache_latents_to_disk = true
+cache_text_encoder_outputs = true
+cache_text_encoder_outputs_to_disk = true
+max_data_loader_n_workers = 2
+persistent_data_loader_workers = true
+
+[caption]
+max_token_length = 225
+
+[run]
+max_train_epochs = 10
+seed = 42
+
+[saving]
+save_model_as = "safetensors"
+save_every_n_epochs = 1
+save_state = true
+save_last_n_epochs_state = 1
+
+[sampling]
+sample_every_n_epochs = 1
+sample_sampler = "euler_a"
