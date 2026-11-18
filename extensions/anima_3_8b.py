@@ -166,8 +166,10 @@ class ConnectorRuntime:
         self.sample_semantics = sample_semantics
         self.deferred: dict[int, tuple] = {}
         self.original_forward = dit.forward
-        dit.llm_adapter.forward = self.adapter_forward
-        dit.forward = self.dit_forward
+        # 束縛メソッドのまま入れると、accelerate.prepare が forward.__func__ を取り出して dit に束縛し直し、
+        # self が ConnectorRuntime ではなく dit になる。__func__ を持たない関数で包んでおく。
+        dit.llm_adapter.forward = lambda *args, **kwargs: self.adapter_forward(*args, **kwargs)
+        dit.forward = lambda *args, **kwargs: self.dit_forward(*args, **kwargs)
 
     def run(self, source, input_ids, target_mask, source_mask, semantic, timesteps):
         states, semantic_mask = semantic

@@ -46,6 +46,7 @@ TEXTS = {
         "te_cache": "テキストのキャッシュと {key} は同時に使えません。どちらかを外してください。",
         "te_dropout": "SDXL ではテキストのキャッシュと caption_dropout_rate を同時に使えません。",
         "te_unet_only": "テキストのキャッシュには network_train_unet_only = true が必要です。",
+        "qwen35_cache": "Anima-3.8B ではテキストのキャッシュが必須です。cache_text_encoder_outputs = true にして、shuffle_caption、caption_tag_dropout_rate、token_warmup_step は外してください。",
         "constant_warmup": "lr_scheduler = \"constant\" では lr_warmup_steps を指定できません。外すか constant_with_warmup にしてください。",
         "bad_scheduler": "lr_scheduler = \"{name}\" は学習の開始時に失敗します。別のスケジューラにしてください。",
         "min_lr": "cosine_with_min_lr には lr_scheduler_min_lr_ratio か min_lr のどちらか片方が必要です。",
@@ -81,6 +82,7 @@ TEXTS = {
         "te_cache": "Text encoder caching cannot be used with {key}. Remove one of them.",
         "te_dropout": "SDXL cannot use text encoder caching with caption_dropout_rate.",
         "te_unet_only": "Text encoder caching needs network_train_unet_only = true.",
+        "qwen35_cache": "Anima-3.8B requires text encoder caching. Set cache_text_encoder_outputs = true, and remove shuffle_caption, caption_tag_dropout_rate and token_warmup_step.",
         "constant_warmup": "lr_scheduler = \"constant\" cannot take lr_warmup_steps. Remove it or use constant_with_warmup.",
         "bad_scheduler": "lr_scheduler = \"{name}\" fails when training starts. Choose another scheduler.",
         "min_lr": "cosine_with_min_lr needs exactly one of lr_scheduler_min_lr_ratio and min_lr.",
@@ -283,6 +285,9 @@ def text_cached(config):
 
 
 def check_caption_options(config, dataset, route):
+    # Anima-3.8B は Qwen3.5 の出力をキャッシュしてから学習する作りなので、キャッシュを切ると VM で失敗する
+    if route == "anima" and config.get("qwen35") and not text_cached(config):
+        fail("qwen35_cache")
     if not text_cached(config):
         return
     if not config.get("network_train_unet_only"):
