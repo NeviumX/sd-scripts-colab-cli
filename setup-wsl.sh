@@ -19,11 +19,7 @@ fi
 uv --version
 
 msg sw_colab; echo
-if command -v colab >/dev/null 2>&1; then
-    uv tool upgrade google-colab-cli
-else
-    uv tool install google-colab-cli
-fi
+uv tool install --upgrade --with keyrings.alt google-colab-cli
 
 msg sw_key; echo
 if [[ ! -f "$HOME/.ssh/id_ed25519" ]]; then

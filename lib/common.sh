@@ -269,7 +269,8 @@ ensure_instance() {
         # 前のランタイムへの共有 SSH 接続が残っていたら閉じる
         stop_master
         log "$(msg runtime_creating "colab new ${new_args[*]}")"
-        colab new "${new_args[@]}"
+        log "$(msg runtime_creating_wait)"
+        colab new "${new_args[@]}" || die "$(msg runtime_create_failed "$GPU")"
     fi
 
     log "$(msg ssh_connecting)"

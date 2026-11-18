@@ -119,6 +119,12 @@ _m runtime_exists \
 _m runtime_creating \
     "ランタイムを作成します: %s" \
     "Creating the runtime: %s"
+_m runtime_creating_wait \
+    "GPU に空きが無いと、colab CLI が何も表示せずに数分間再試行します。進み具合は別のターミナルで tail -f ~/.config/colab-cli/colab.log を実行すると見られます。" \
+    "If no GPU is free, the colab CLI retries silently for a few minutes. To watch progress, run tail -f ~/.config/colab-cli/colab.log in another terminal."
+_m runtime_create_failed \
+    "ランタイムを作成できませんでした。%s に空きが無い可能性があります。時間をおいて再実行するか、config.local.env の GPU を別の種類に変えてください。" \
+    "Could not create the runtime. %s may be out of capacity. Try again later, or set GPU in config.local.env to another type."
 _m ssh_connecting \
     "SSH で接続します。" \
     "Connecting over SSH."
